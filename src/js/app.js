@@ -8,26 +8,39 @@ $(function () {
 
 
     // Daterangepickers
-    $('[data-toggle="daterangepicker"]').daterangepicker({
-        startDate: moment().startOf('month'),
-        endDate: moment(),
-        timePicker: true,
-        opens: $(this).data('opens'),
-        ranges: {
-           'Today': [moment().startOf('day'), moment()],
-           'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().startOf('day')],
-           'Last 7 Days': [moment().subtract(7, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(30, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment()],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        locale: {
-            format: 'YYYY/MM/DD hh:mm A'
+    $('[data-toggle="daterangepicker"]').each(function(item) {
+        if ($(this).data('mode') == 'single') {
+            $(this).daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                opens: $(this).data('opens'),
+                locale: {
+                    format: 'YYYY/MM/DD hh:mm A',
+                }
+            });
+        } else {
+            $(this).daterangepicker({
+                startDate: moment().startOf('month'),
+                endDate: moment(),
+                timePicker: true,
+                opens: $(this).data('opens'),
+                ranges: {
+                    'Today': [moment().startOf('day'), moment()],
+                    'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().startOf('day')],
+                    'Last 7 Days': [moment().subtract(7, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(30, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment()],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                },
+                locale: {
+                    format: 'YYYY/MM/DD hh:mm A',
+                }
+            });
         }
     });
 
     $('[data-toggle="daterangepicker"]').on('hide.daterangepicker', function (event) {
-      $(this)[0].dispatchEvent(new Event('input'));
+        $(this)[0].dispatchEvent(new Event('input'))
     });
 
 
