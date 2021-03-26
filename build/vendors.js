@@ -88,13 +88,11 @@ const findVendors = () => {
                   const assetPath = asset.match(/(?:url)\((.*?)\)/)[1]
                   let subVendor = []
                   if (assetPath !== undefined) {
-                    // console.log(assetPath)
                     const path = assetPath.replace(/\?.*|#.*/, '').replace(/\'|\"/, '')
                     subVendor['name'] = name
                     subVendor['filetype'] = 'other'
                     subVendor['src'] = normalize(`css/${path}`)
                     subVendor['absolute'] = resolve(dirname(src), path)
-
                     vendors.push(subVendor)
                   }
                 })
@@ -111,12 +109,17 @@ const findVendors = () => {
 const copyFiles = (files, dest) => {
   files.forEach((file) => {
     let dir
-    file.filetype !== 'other' ? dir = resolve(dest, file.name, file.filetype) : dir = resolve(dest, file.name, dirname(file.src))
+    file.filetype !== 'other'
+      ? dir = resolve(dest, file.name, file.filetype)
+      : dir = resolve(dest, file.name, dirname(file.src))
     mkdirp.sync(dir)
-    fs.createReadStream(file.absolute).pipe(fs.createWriteStream(resolve(dir, basename(file.src))))
 
-    if (fs.existsSync(`${file.absolute}.map`)) {
-      fs.createReadStream(`${file.absolute}.map`).pipe(fs.createWriteStream(resolve(dir, `${basename(file.src)}.map`)))
+    if (! file.src.match(/\/$/)) {
+      fs.createReadStream(file.absolute).pipe(fs.createWriteStream(resolve(dir, basename(file.src))))
+
+      if (fs.existsSync(`${file.absolute}.map`)) {
+        fs.createReadStream(`${file.absolute}.map`).pipe(fs.createWriteStream(resolve(dir, `${basename(file.src)}.map`)))
+      }
     }
   })
 }
