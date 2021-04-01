@@ -19,9 +19,19 @@ $(function () {
                 }
             });
         } else {
+            let start, end;
+            const range = $(this).val();
+            if (range.match(/^\d+\/\d+\/\d+( \d+:\d+ (\w+)?)? - \d+\/\d+\/\d+( \d+:\d+ (\w+)?)?$/)) {
+                start = range.split(' - ')[0];
+                end = range.split(' - ')[1];
+            } else {
+                start = moment().startOf('month');
+                end = moment();
+            }
+
             $(this).daterangepicker({
-                startDate: moment().startOf('month'),
-                endDate: moment(),
+                startDate: start,
+                endDate: end,
                 timePicker: true,
                 opens: $(this).data('opens'),
                 ranges: {
@@ -30,7 +40,7 @@ $(function () {
                     'Last 7 Days': [moment().subtract(7, 'days'), moment()],
                     'Last 30 Days': [moment().subtract(30, 'days'), moment()],
                     'This Month': [moment().startOf('month'), moment()],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'Prev Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                 },
                 locale: {
                     format: 'YYYY/MM/DD hh:mm A',
