@@ -90,6 +90,7 @@
     "popper.js": "^1.16.1",
     "regenerator-runtime": "^0.13.5",
     "simple-line-icons": "2.4.1",
+    "sortablejs": "^1.13.0",
     "sweetalert2": "^10.15.5"
   },
   "devDependencies": {
